@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/jasonbronson/kwik-cms-engine/middlewares"
 	"github.com/jasonbronson/kwik-cms-engine/request"
 	"github.com/newrelic/go-agent/v3/integrations/nrgin"
 	"github.com/newrelic/go-agent/v3/newrelic"
@@ -44,7 +45,15 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 	api := router.Group("/v1/api")
 	{
 		api.POST("/sign-in", request.PostLoginHandlerFunc)
-
+		api.Use(middlewares.AuthMiddleware())
+		users := api.Group("/users")
+		{
+			users.GET("", request.GetUsers)
+			users.GET("/:userid", request.GetUser)
+			users.POST("", request.PostUser)
+			users.PUT("/:userid", request.PutUsers)
+			users.DELETE("/:userid", request.DeleteUsers)
+		}
 	}
 
 	return router

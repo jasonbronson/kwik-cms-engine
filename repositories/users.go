@@ -27,7 +27,7 @@ func GetUsers(db *gorm.DB, params helpers.DefaultParameters) *response.Response 
 }
 func GetUser(db *gorm.DB, UserID string) *response.Response {
 	var User model.User
-	db.Where("id = ?", UserID).First(&User)
+	db.Select("id", "email", "created_at", "updated_at").Where("id = ?", UserID).First(&User)
 	params := helpers.DefaultParameters{
 		PageSize:   1,
 		PageOffset: 0,

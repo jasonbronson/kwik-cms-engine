@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/go-redis/redis/v7"
+	"github.com/jasonbronson/kwik-cms-engine/model"
 	"github.com/joho/godotenv"
 	"github.com/newrelic/go-agent/v3/integrations/nrredis-v7"
 	_ "github.com/newrelic/go-agent/v3/integrations/nrsqlite3"
@@ -107,7 +108,15 @@ func initDB() {
 	// 	Cfg.GormDB.Logger = newLogger
 	// }
 
+	AutoMigrate()
+
 	log.Println("Success connecting to database")
+}
+
+func AutoMigrate() {
+	Cfg.GormDB.AutoMigrate(
+		&model.User{},
+	)
 }
 
 func initRedis() {

@@ -9,14 +9,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
-	"github.com/jasonbronson/kwik-cms-engine/model"
-
-	// uuid "github.com/satori/go.uuid"
 	"github.com/jasonbronson/kwik-cms-engine/config"
 	"github.com/jasonbronson/kwik-cms-engine/library/helpers"
+	"github.com/jasonbronson/kwik-cms-engine/model"
 	"github.com/jasonbronson/kwik-cms-engine/repositories"
 	"github.com/jasonbronson/kwik-cms-engine/request/response"
-	_ "github.com/jasonbronson/kwik-cms-engine/request/response"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -8,11 +8,11 @@ import (
 )
 
 type User struct {
-	ID        string `gorm:"primary_key;column:id;type:VARCHAR;size:255;unique;not null;" json:"id"`
-	Email     string `gorm:"column:email;type:VARCHAR;size:255;unique;" json:"email"`
-	Password  string `gorm:"column:password;type:VARCHAR;size:255;" json:"password"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        string    `gorm:"primary_key;column:id;type:VARCHAR;size:255;unique;not null;" json:"id"`
+	Email     string    `gorm:"column:email;type:VARCHAR;size:255;unique;" json:"email"`
+	Password  string    `gorm:"column:password;type:VARCHAR;size:255;" json:"password"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (u *User) TableName() string {

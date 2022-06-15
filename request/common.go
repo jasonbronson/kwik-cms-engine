@@ -49,7 +49,8 @@ func GetSortQueryString(sortColumn, sortBy string) string {
 	switch sortColumn {
 	case "test":
 		sortOrder = "test " + getSortBy(sortBy)
-
+	default:
+		sortOrder = "created_at " + getSortBy(sortBy)
 	}
 	return sortOrder
 }
