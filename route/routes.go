@@ -54,6 +54,44 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			users.PUT("/:userid", request.PutUsers)
 			users.DELETE("/:userid", request.DeleteUsers)
 		}
+		tags := api.Group("/tags")
+		{
+			tags.GET("", request.GetTags)
+			tags.GET("/:tagid", request.GetTag)
+			tags.POST("", request.SetTags)
+			tags.PUT("/:tagid", request.PutTags)
+			tags.DELETE("/:tagid", request.DeleteTags)
+		}
+		categories := api.Group("/categories")
+		{
+			categories.GET("", request.GetCategories)
+			categories.GET("/:categoryid", request.GetCategory)
+			categories.POST("", request.SetCategories)
+			categories.PUT("/:categoryid", request.PutCategories)
+			categories.DELETE("/:categoryid", request.DeleteCategories)
+		}
+		authors := api.Group("/authors")
+		{
+			authors.GET("", request.GetAuthors)
+			authors.GET("/:authorid", request.GetAuthor)
+			authors.POST("", request.SetAuthors)
+			authors.PUT("/:authorid", request.PutAuthors)
+			authors.DELETE("/:authorid", request.DeleteAuthors)
+		}
+		posts := api.Group("/posts")
+		{
+			posts.GET("", request.GetPosts)
+			posts.GET("/:postid", request.GetPost)
+			posts.POST("", request.SetPosts)
+			posts.PUT("/:postid", request.PutPosts)
+			posts.DELETE("/:postid", request.DeletePosts)
+		}
+		media := api.Group("/media")
+		{
+			media.GET("", request.GetMedia)
+			media.POST("", request.SetMedia)
+			media.DELETE("/:mediaid", request.DeleteMedia)
+		}
 	}
 
 	return router
