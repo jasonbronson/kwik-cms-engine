@@ -15,15 +15,26 @@ require (
 	github.com/sumit-tembe/gin-requestid v0.0.0-20191217132119-618fbd2c6306
 	github.com/xo/dburl v0.7.0
 	gorm.io/driver/sqlite v1.1.4
-	gorm.io/gorm v1.21.9
+	gorm.io/gorm v1.23.4
 )
 
 require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
-	github.com/lib/pq v1.10.0 // indirect
+	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
+	github.com/jackc/pgconn v1.12.1 // indirect
+	github.com/jackc/pgio v1.0.0 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
+	github.com/jackc/pgtype v1.11.0 // indirect
+	github.com/jackc/pgx/v4 v4.16.1 // indirect
+	github.com/lib/pq v1.10.2 // indirect
+	github.com/newrelic/go-agent/v3/integrations/nrpq v1.1.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	google.golang.org/protobuf v1.28.0 // indirect
+	gorm.io/driver/postgres v1.3.7 // indirect
 )
 
 require (
@@ -37,7 +48,7 @@ require (
 	github.com/google/jsonapi v1.0.0
 	github.com/google/uuid v1.3.0
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.2 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mailgun/mailgun-go/v4 v4.8.1
 	github.com/mattn/go-sqlite3 v1.14.10 // indirect

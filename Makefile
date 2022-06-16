@@ -14,5 +14,8 @@ build: ## Build go binary
 buildcron: 
 	go build -o ${DIST_DIR}/cron ./cmd/cron/main.go
 
+buildmigrate: 
+	go build -o ${DIST_DIR}/migrate ./cmd/migrations/main.go
+
 local:
-	docker-compose up
+	docker-compose -f docker-compose.local.yml up 

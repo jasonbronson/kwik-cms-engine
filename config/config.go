@@ -10,13 +10,11 @@ import (
 	"strings"
 
 	"github.com/go-redis/redis/v7"
-	"github.com/jasonbronson/kwik-cms-engine/model"
 	"github.com/joho/godotenv"
+	_ "github.com/newrelic/go-agent/v3/integrations/nrpq"
 	"github.com/newrelic/go-agent/v3/integrations/nrredis-v7"
-	_ "github.com/newrelic/go-agent/v3/integrations/nrsqlite3"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/xo/dburl"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -49,6 +47,8 @@ type Config struct {
 	MediaBucketRegion         string
 	AWSSecret                 string
 	AWSAccessKey              string
+	DBMaxIdleConnections      int
+	DBMaxConnections          int
 }
 
 func init() {
@@ -84,21 +84,28 @@ func initEnv() {
 	Cfg.MediaBucketRegion = os.Getenv("MEDIA_BUCKET_REGION")
 	Cfg.AWSSecret = os.Getenv("AWS_ACCESS_SECRET")
 	Cfg.AWSAccessKey = os.Getenv("AWS_ACCESS_KEY_ID")
+	Cfg.DBMaxIdleConnections, _ = strconv.Atoi(os.Getenv("DB_MAX_IDLE_CONNECTIONS"))
+	Cfg.DBMaxConnections, _ = strconv.Atoi(os.Getenv("DB_MAX_CONNECTIONS"))
 
 }
 
 func initDB() {
 
 	var err error
-	u, err := dburl.Parse(Cfg.DatabaseURL)
+	// u, err := dburl.Parse(Cfg.DatabaseURL)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// dbname := u.DSN
+	// if dbname == "" {
+	// 	log.Fatal("database not found or empty env var")
+	// }
+	driver := "nrpostgres"
+
+	db, err := sql.Open(driver, Cfg.DatabaseURL)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("could not connect to database: %v", err)
 	}
-	dbname := u.DSN
-	if dbname == "" {
-		log.Fatal("database not found or empty env var")
-	}
-	dbdialect := sqlite.Open(dbname)
 
 	// newLogger := logger.New(
 	// 	log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -110,32 +117,27 @@ func initDB() {
 	// 	},
 	// )
 
-	gconfig := &gorm.Config{}
-	if Cfg.GormDB, err = gorm.Open(dbdialect, gconfig); err != nil {
+	Cfg.GormDB, err = gorm.Open(postgres.New(postgres.Config{
+		Conn: db,
+	}), &gorm.Config{})
+	if err != nil {
 		log.Fatalf("could not initialize gorm: %v", err)
 	}
-
+	maxOpenConns := Cfg.DBMaxConnections
+	maxIdleConns := Cfg.DBMaxIdleConnections
+	db.SetMaxOpenConns(maxOpenConns)
+	db.SetMaxIdleConns(maxIdleConns)
 	//Debug SQL logs?
 	// if Cfg.DBLogMode {
 	// 	Cfg.GormDB.Logger = newLogger
 	// }
 
-	AutoMigrate()
+	if err = db.Ping(); err != nil {
+		log.Fatal("Database ping failed ", err)
+	}
+	log.Println("Success pinging database")
 
-	log.Println("Success connecting to database")
-}
-
-func AutoMigrate() {
-	Cfg.GormDB.AutoMigrate(
-		&model.User{},
-		&model.Category{},
-		&model.Tag{},
-		&model.Media{},
-		&model.Author{},
-		&model.Post{},
-		&model.CategoriesPostLinks{},
-		&model.TagsPostLinks{},
-	)
+	log.Println("Success initializing database")
 }
 
 func initRedis() {

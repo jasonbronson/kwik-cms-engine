@@ -1,0 +1,37 @@
+version: "3.1"
+services:
+  go-api:
+    network_mode: "host"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: CompileDaemon -log-prefix=false -build="make build" -command="./dist/api"
+    volumes:
+      - ./:/app
+    env_file:
+      - ./.env
+  cron:
+    network_mode: "host"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: CompileDaemon -log-prefix=false -build="make buildcron" -command="/app/dist/cron"
+    env_file: ./.env
+    volumes:
+      - .:/app
+  migrations:
+    network_mode: "host"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: CompileDaemon -log-prefix=false -build="make buildmigrate" -command="/app/dist/migrate"
+    env_file: ./.env
+    volumes:
+      - .:/app
+  redis:
+    image: redis:6.2.4-alpine
+    
+
