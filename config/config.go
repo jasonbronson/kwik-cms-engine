@@ -44,6 +44,11 @@ type Config struct {
 	MailgunSecret             string
 	MailgunContactMeRecipient string
 	JwtConfig                 *JWTConfig
+	MediaBucketName           string
+	MediaBucketURL            string
+	MediaBucketRegion         string
+	AWSSecret                 string
+	AWSAccessKey              string
 }
 
 func init() {
@@ -72,6 +77,13 @@ func initEnv() {
 		Audience: os.Getenv("JWT_AUDIENCE"),
 	}
 	Cfg.JwtConfig = &jwt
+
+	//S3 bucket
+	Cfg.MediaBucketName = os.Getenv("MEDIA_BUCKET_NAME")
+	Cfg.MediaBucketURL = os.Getenv("MEDIA_BUCKET_URL")
+	Cfg.MediaBucketRegion = os.Getenv("MEDIA_BUCKET_REGION")
+	Cfg.AWSSecret = os.Getenv("AWS_ACCESS_SECRET")
+	Cfg.AWSAccessKey = os.Getenv("AWS_ACCESS_KEY_ID")
 
 }
 
@@ -116,6 +128,13 @@ func initDB() {
 func AutoMigrate() {
 	Cfg.GormDB.AutoMigrate(
 		&model.User{},
+		&model.Category{},
+		&model.Tag{},
+		&model.Media{},
+		&model.Author{},
+		&model.Post{},
+		&model.CategoriesPostLinks{},
+		&model.TagsPostLinks{},
 	)
 }
 
