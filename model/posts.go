@@ -14,11 +14,11 @@ type Post struct {
 	Content     string     `gorm:"column:content;type:TEXT;" json:"content"`
 	Summary     string     `gorm:"column:summary;type:VARCHAR;size:255;" json:"summary"`
 	Description string     `gorm:"column:description;type:VARCHAR;size:255;" json:"description"`
-	AuthorID    string     `gorm:"column:author_id;type:VARCHAR;size:255;" json:"author_id"`
+	AuthorID    int        `gorm:"column:author_id;type:VARCHAR;size:255;" json:"author_id"`
 	Author      Author     `gorm:"foreignKey:ID;references:AuthorID" json:"author"`
 	Categories  []Category `gorm:"many2many:categories_post_links;ForeignKey:ID;References:ID"`
 	Tags        []Tag      `gorm:"many2many:tags_post_links;ForeignKey:ID;References:ID"`
-	MediaID     string     `gorm:"column:media_id;type:VARCHAR;size:255;" json:"media_id"`
+	MediaID     int        `gorm:"column:media_id;type:VARCHAR;size:255;" json:"media_id"`
 	Media       Media      `gorm:"foreignKey:ID;references:MediaID" json:"media"`
 	PublishDate time.Time  `gorm:"column:publish_date;type:TIMESTAMP;" json:"publish_date"`
 	CreatedAt   time.Time  `json:"created_at"`
