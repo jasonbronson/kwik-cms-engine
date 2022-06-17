@@ -70,14 +70,6 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			categories.PUT("/:categoryid", request.PutCategories)
 			categories.DELETE("/:categoryid", request.DeleteCategories)
 		}
-		authors := api.Group("/authors")
-		{
-			authors.GET("", request.GetAuthors)
-			authors.GET("/:authorid", request.GetAuthor)
-			authors.POST("", request.SetAuthors)
-			authors.PUT("/:authorid", request.PutAuthors)
-			authors.DELETE("/:authorid", request.DeleteAuthors)
-		}
 		posts := api.Group("/posts")
 		{
 			posts.GET("", request.GetPosts)

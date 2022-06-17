@@ -26,13 +26,13 @@ func GetPosts(db *gorm.DB, params helpers.DefaultParameters) *response.Response 
 
 	params.Total = Count(db, &posts)
 	params.ResultTotal = Count(q, &posts)
-	q.Preload("Author").Preload("Categories").Preload("Tags").Preload("Media").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&posts)
+	q.Preload("User").Preload("Categories").Preload("Tags").Preload("Media").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&posts)
 	return metaBuild(posts, params)
 }
 
 func GetPostByID(db *gorm.DB, id string) *response.Response {
 	var post model.Post
-	q := db.Preload("Categories").Preload("Tags").Preload("Author").Preload("Media").Where("id = ?", id)
+	q := db.Preload("Categories").Preload("Tags").Preload("User").Preload("Media").Where("id = ?", id)
 	q.Find(&post)
 	params := helpers.DefaultParameters{
 		PageSize:   1,
