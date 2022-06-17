@@ -92,6 +92,14 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			media.POST("", request.SetMedia)
 			media.DELETE("/:mediaid", request.DeleteMedia)
 		}
+		roles := api.Group("/roles")
+		{
+			roles.GET("", request.GetRoles)
+			roles.GET("/:roleid", request.GetRole)
+			roles.POST("", request.SetRoles)
+			roles.PUT("/:roleid", request.PutRoles)
+			roles.DELETE("/:roleid", request.DeleteRoles)
+		}
 	}
 
 	return router

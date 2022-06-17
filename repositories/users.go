@@ -22,12 +22,12 @@ func GetUsers(db *gorm.DB, params helpers.DefaultParameters) *response.Response 
 
 	params.Total = Count(db, &Users)
 	params.ResultTotal = Count(q, &Users)
-	q.Select("id", "email", "created_at", "updated_at").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&Users)
+	q.Omit("Password").Preload("Role").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&Users)
 	return metaBuild(Users, params)
 }
 func GetUser(db *gorm.DB, UserID string) *response.Response {
 	var User model.User
-	db.Select("id", "email", "created_at", "updated_at").Where("id = ?", UserID).First(&User)
+	db.Omit("Password").Preload("Role").Where("id = ?", UserID).First(&User)
 	params := helpers.DefaultParameters{
 		PageSize:   1,
 		PageOffset: 0,
