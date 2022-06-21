@@ -12,7 +12,6 @@ type Post struct {
 	Title       string     `gorm:"column:title;type:VARCHAR;size:255;" json:"title"`
 	Slug        string     `gorm:"column:slug;type:VARCHAR;size:255;unique;" json:"slug"`
 	Content     string     `gorm:"column:content;type:TEXT;" json:"content"`
-	Summary     string     `gorm:"column:summary;type:VARCHAR;size:255;" json:"summary"`
 	Description string     `gorm:"column:description;type:VARCHAR;size:255;" json:"description"`
 	UserID      string     `gorm:"column:user_id;type:VARCHAR;size:255;" json:"user_id"`
 	User        User       `gorm:"foreignKey:ID;references:UserID" json:"user"`
