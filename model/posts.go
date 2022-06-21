@@ -10,12 +10,14 @@ import (
 type Post struct {
 	ID          string     `gorm:"primary_key;column:id;type:VARCHAR;size:255;unique;not null;" json:"id"`
 	Title       string     `gorm:"column:title;type:VARCHAR;size:255;" json:"title"`
+	SEOTitle    string     `gorm:"column:seo_title;type:VARCHAR;size:255;" json:"seo_title"`
 	Slug        string     `gorm:"column:slug;type:VARCHAR;size:255;unique;" json:"slug"`
 	Content     string     `gorm:"column:content;type:TEXT;" json:"content"`
 	Summary     string     `gorm:"column:summary;type:VARCHAR;size:255;" json:"summary"`
 	Description string     `gorm:"column:description;type:VARCHAR;size:255;" json:"description"`
 	UserID      string     `gorm:"column:user_id;type:VARCHAR;size:255;" json:"user_id"`
 	User        User       `gorm:"foreignKey:ID;references:UserID" json:"user"`
+	Status      string     `gorm:"column:status;type:VARCHAR;size:255;" json:"status"`
 	Categories  []Category `gorm:"many2many:categories_post_links;ForeignKey:ID;References:ID"`
 	Tags        []Tag      `gorm:"many2many:tags_post_links;ForeignKey:ID;References:ID"`
 	MediaID     string     `gorm:"column:media_id;type:VARCHAR;size:255;" json:"media_id"`
