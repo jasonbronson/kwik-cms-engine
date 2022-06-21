@@ -10,7 +10,6 @@ import (
 type Post struct {
 	ID          string     `gorm:"primary_key;column:id;type:VARCHAR;size:255;unique;not null;" json:"id"`
 	Title       string     `gorm:"column:title;type:VARCHAR;size:255;" json:"title"`
-	SEOTitle    string     `gorm:"column:seo_title;type:VARCHAR;size:255;" json:"seo_title"`
 	Slug        string     `gorm:"column:slug;type:VARCHAR;size:255;unique;" json:"slug"`
 	Content     string     `gorm:"column:content;type:TEXT;" json:"content"`
 	Summary     string     `gorm:"column:summary;type:VARCHAR;size:255;" json:"summary"`
