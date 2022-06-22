@@ -43,7 +43,13 @@ func CreateDynamicGroup(db *gorm.DB, DynamicGroup model.DynamicGroup) error {
 	return db.Create(&DynamicGroup).Error
 }
 func UpdateDynamicGroup(db *gorm.DB, DynamicGroup model.DynamicGroup) error {
-	return db.Select("*").Updates(&DynamicGroup).Error
+	tx := db.Begin()
+	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Select("*").Updates(&DynamicGroup).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
 }
 
 func DeleteDynamicGroup(db *gorm.DB, ID string) error {

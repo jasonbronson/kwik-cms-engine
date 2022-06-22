@@ -46,7 +46,13 @@ func CreatePost(db *gorm.DB, Post model.Post) error {
 	return db.Create(&Post).Error
 }
 func UpdatePost(db *gorm.DB, Post model.Post) error {
-	return db.Select("*").Updates(&Post).Error
+	tx := db.Begin()
+	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Select("*").Updates(&Post).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
 }
 
 func DeletePost(db *gorm.DB, PostID string) error {

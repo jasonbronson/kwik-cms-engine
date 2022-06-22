@@ -21,7 +21,7 @@ func GetDynamicGroups(g *gin.Context) {
 func GetDynamicGroup(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
-	id := g.Param("postid")
+	id := g.Param("id")
 	var r *response.Response
 	r = repositories.GetDynamicGroup(db, id)
 	response.Standard(g.Writer, http.StatusOK, r)
