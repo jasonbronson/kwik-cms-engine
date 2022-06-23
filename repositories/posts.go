@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetPosts(db *gorm.DB, params helpers.DefaultParameters) *response.Response {
+func GetPosts(db *gorm.DB, params helpers.DefaultParameters, Type string) *response.Response {
 	var posts []model.Post
 	q := db.Model(&posts)
 
@@ -21,12 +21,14 @@ func GetPosts(db *gorm.DB, params helpers.DefaultParameters) *response.Response 
 			q.Scopes(FilterDescription(params.FilterValue[i]))
 		case "content":
 			q.Scopes(FilterContent(params.FilterValue[i]))
+		case "status":
+			q.Scopes(FilterStatus(params.FilterValue[i]))
 		}
 	}
 
 	params.Total = Count(db, &posts)
 	params.ResultTotal = Count(q, &posts)
-	q.Preload("User").Preload("Categories").Preload("Tags").Preload("Media").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&posts)
+	q.Preload("User").Preload("Categories").Preload("Tags").Preload("Media").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Where("type = ?", Type).Find(&posts)
 	return metaBuild(posts, params)
 }
 
@@ -47,7 +49,7 @@ func CreatePost(db *gorm.DB, Post model.Post) error {
 }
 func UpdatePost(db *gorm.DB, Post model.Post) error {
 	tx := db.Begin()
-	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Select("*").Updates(&Post).Error; err != nil {
+	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Updates(&Post).Error; err != nil {
 		tx.Rollback()
 		return err
 	}

@@ -88,6 +88,11 @@ func FilterTitle(value string) func(db *gorm.DB) *gorm.DB {
 		return db.Where("LOWER(title) LIKE ?", "%"+strings.ToLower(value)+"%")
 	}
 }
+func FilterStatus(value string) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("LOWER(status) LIKE ?", "%"+strings.ToLower(value)+"%")
+	}
+}
 func FilterEventName(value string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("LOWER(event_name) LIKE ?", "%"+strings.ToLower(value)+"%")

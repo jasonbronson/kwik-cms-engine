@@ -16,6 +16,7 @@ type Post struct {
 	UserID      string     `gorm:"column:user_id;type:VARCHAR;size:255;" json:"user_id"`
 	User        User       `gorm:"foreignKey:ID;references:UserID" json:"user"`
 	Status      string     `gorm:"column:status;type:VARCHAR;size:255;" json:"status"`
+	Type        string     `gorm:"column:type;type:VARCHAR;size:255;" json:"type"`
 	Categories  []Category `gorm:"many2many:categories_post_links;ForeignKey:ID;References:ID"`
 	Tags        []Tag      `gorm:"many2many:tags_post_links;ForeignKey:ID;References:ID"`
 	MediaID     string     `gorm:"column:media_id;type:VARCHAR;size:255;" json:"media_id"`

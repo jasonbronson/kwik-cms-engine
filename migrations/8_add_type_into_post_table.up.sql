@@ -1,0 +1,1 @@
+ALTER TABLE "public"."post" ADD COLUMN "type" varchar;

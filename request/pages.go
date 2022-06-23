@@ -11,34 +11,33 @@ import (
 	"github.com/jasonbronson/kwik-cms-engine/request/response"
 )
 
-func GetPosts(g *gin.Context) {
+func GetPages(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
 	params := defaultParameters(g)
-	r := repositories.GetPosts(db, params, "post")
+	r := repositories.GetPosts(db, params, "page")
 	response.Standard(g.Writer, http.StatusOK, r)
 }
 
-func GetPost(g *gin.Context) {
+func GetPage(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
-	id := g.Param("postid")
+	id := g.Param("pageid")
 	var r *response.Response
 	r = repositories.GetPostByID(db, id)
 	response.Standard(g.Writer, http.StatusOK, r)
 }
 
-func PutPosts(g *gin.Context) {
+func PutPages(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
 
-	var post model.Post
-	if e := g.ShouldBindJSON(&post); e != nil {
+	var page model.Post
+	if e := g.ShouldBindJSON(&page); e != nil {
 		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
 		return
 	}
-
-	e := repositories.UpdatePost(db, post)
+	e := repositories.UpdatePost(db, page)
 	if e != nil {
 		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
 		return
@@ -46,19 +45,17 @@ func PutPosts(g *gin.Context) {
 	response.Action(g.Writer, http.StatusOK, "success")
 }
 
-func SetPosts(g *gin.Context) {
+func SetPages(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
 
-	var post model.Post
-	if e := g.ShouldBindJSON(&post); e != nil {
+	var page model.Post
+	if e := g.ShouldBindJSON(&page); e != nil {
 		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
 		return
 	}
-
-	post.Type = "post"
-
-	e := repositories.CreatePost(db, post)
+	page.Type = "page"
+	e := repositories.CreatePost(db, page)
 	if e != nil {
 		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
 		return
@@ -66,10 +63,10 @@ func SetPosts(g *gin.Context) {
 	response.Action(g.Writer, http.StatusOK, "success")
 }
 
-func DeletePosts(g *gin.Context) {
+func DeletePages(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
-	id := g.Param("postid")
+	id := g.Param("pageid")
 	e := repositories.DeletePost(db, id)
 	if e != nil {
 		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
