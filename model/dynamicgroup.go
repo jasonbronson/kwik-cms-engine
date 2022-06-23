@@ -26,8 +26,3 @@ func (u *DynamicGroup) BeforeCreate(tx *gorm.DB) (err error) {
 	}
 	return nil
 }
-
-func (a *DynamicGroup) BeforeUpdate(tx *gorm.DB) (err error) {
-	tx.Where("dynamic_group_id = ?", a.ID).Delete(DynamicGroupsFields{})
-	return nil
-}
