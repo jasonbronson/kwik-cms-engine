@@ -23,6 +23,10 @@ func GetPosts(db *gorm.DB, params helpers.DefaultParameters, Type string) *respo
 			q.Scopes(FilterContent(params.FilterValue[i]))
 		case "status":
 			q.Scopes(FilterStatus(params.FilterValue[i]))
+		case "author":
+			q.Scopes(AuthorPostJoinByID(params.FilterValue[i]))
+		case "category":
+			q.Scopes(CategoryPostJoinByID(params.FilterValue[i]))
 		}
 	}
 

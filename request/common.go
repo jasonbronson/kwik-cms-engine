@@ -65,6 +65,12 @@ func GetFilterQueryString(r *http.Request) helpers.DefaultParameters {
 		case "status":
 			p.FilterBy = append(p.FilterBy, "status")
 			p.FilterValue = append(p.FilterValue, value[0])
+		case "author":
+			p.FilterBy = append(p.FilterBy, "author")
+			p.FilterValue = append(p.FilterValue, value[0])
+		case "category":
+			p.FilterBy = append(p.FilterBy, "category")
+			p.FilterValue = append(p.FilterValue, value[0])
 		}
 	}
 	return p

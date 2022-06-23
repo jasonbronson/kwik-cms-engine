@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"log"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -47,14 +45,14 @@ func Published() func(db *gorm.DB) *gorm.DB {
 		return db.Where("published_at < NOW()")
 	}
 }
-func CategoryArticleJoinByName(value string) func(db *gorm.DB) *gorm.DB {
+func CategoryPostJoinByID(value string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		match, _ := regexp.MatchString("^[A-Z a-z].", value)
-		if !match {
-			log.Println("err categoryArticleJoinByName: value has invalid characters")
-			return nil
-		}
-		return db.Preload("Categories").Joins("JOIN categories_article_links cal on cal.article_id=article.id JOIN category c on c.id = cal.category_id and c.name = ?", value)
+		return db.Joins("JOIN categories_post_links cal on cal.post_id=post.id").Where("cal.category_id = ?", value)
+	}
+}
+func AuthorPostJoinByID(value string) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("user_id = ?", value)
 	}
 }
 func ByID(value string) func(db *gorm.DB) *gorm.DB {
