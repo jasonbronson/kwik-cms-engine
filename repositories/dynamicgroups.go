@@ -23,13 +23,13 @@ func GetDynamicGroups(db *gorm.DB, params helpers.DefaultParameters) *response.R
 
 	params.Total = Count(db, &dynamicgroups)
 	params.ResultTotal = Count(q, &dynamicgroups)
-	q.Preload("DynamicFields").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&dynamicgroups)
+	q.Preload("Fields").Order(params.SortOrder).Limit(params.PageSize).Offset(params.PageOffset).Find(&dynamicgroups)
 	return metaBuild(dynamicgroups, params)
 }
 
 func GetDynamicGroup(db *gorm.DB, id string) *response.Response {
 	var dynamicgroup model.DynamicGroup
-	q := db.Preload("DynamicFields").Where("id = ?", id)
+	q := db.Preload("Fields").Where("id = ?", id)
 	q.Find(&dynamicgroup)
 	params := helpers.DefaultParameters{
 		PageSize:   1,

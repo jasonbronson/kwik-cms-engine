@@ -53,7 +53,6 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			dynamic.POST("", request.PostDynamicGroup)
 			dynamic.PUT("/:id", request.PutDynamicGroup)
 			dynamic.DELETE("/:id", request.DeleteDynamicGroup)
-
 		}
 		users := api.Group("/users")
 		{
