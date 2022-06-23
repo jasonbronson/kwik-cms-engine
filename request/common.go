@@ -59,8 +59,8 @@ func GetFilterQueryString(r *http.Request) helpers.DefaultParameters {
 	p := helpers.DefaultParameters{}
 	for key, value := range r.URL.Query() {
 		switch key {
-		case "test":
-			p.FilterBy = append(p.FilterBy, "test")
+		case "title":
+			p.FilterBy = append(p.FilterBy, "title")
 			p.FilterValue = append(p.FilterValue, value[0])
 		}
 	}
