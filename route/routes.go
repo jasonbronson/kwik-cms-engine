@@ -46,6 +46,15 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 	{
 		api.POST("/sign-in", request.PostLoginHandlerFunc)
 		api.Use(middlewares.AuthMiddleware())
+		dynamic := api.Group("/dynamicgroups")
+		{
+			dynamic.GET("", request.GetDynamicGroups)
+			dynamic.GET("/:id", request.GetDynamicGroup)
+			dynamic.POST("", request.PostDynamicGroup)
+			dynamic.PUT("/:id", request.PutDynamicGroup)
+			dynamic.DELETE("/:id", request.DeleteDynamicGroup)
+
+		}
 		users := api.Group("/users")
 		{
 			users.GET("", request.GetUsers)
