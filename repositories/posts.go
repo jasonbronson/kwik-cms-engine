@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"time"
+
 	"github.com/jasonbronson/kwik-cms-engine/library/helpers"
 	model "github.com/jasonbronson/kwik-cms-engine/model"
 	"github.com/jasonbronson/kwik-cms-engine/request/response"
@@ -66,4 +68,10 @@ func DeletePost(db *gorm.DB, PostID string) error {
 		ID: PostID,
 	}
 	return db.Delete(&a).Error
+}
+
+func UpdatePublishDate(db *gorm.DB, PublishDate time.Time, PostID string) error {
+	var Post model.Post
+	err := db.Model(&Post).Where("id = ?", PostID).UpdateColumn("publish_date", PublishDate).Error
+	return err
 }

@@ -85,6 +85,7 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			posts.POST("", request.SetPosts)
 			posts.PUT("/:postid", request.PutPosts)
 			posts.DELETE("/:postid", request.DeletePosts)
+			posts.PUT("/publish/:postid", request.UpdatePublishDate)
 		}
 		pages := api.Group("/pages")
 		{
