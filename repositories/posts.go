@@ -56,7 +56,7 @@ func CreatePost(db *gorm.DB, Post model.Post) error {
 func UpdatePost(db *gorm.DB, Post model.Post) error {
 	tx := db.Begin()
 	if Post.Categories == nil && Post.Tags == nil {
-		if err := db.Model(&Post).Where("id = ?", Post.ID).UpdateColumn("publish_date", Post.PublishDate).Error; err != nil {
+		if err := db.Model(&Post).Where("id = ?", Post.ID).UpdateColumns(model.Post{PublishDate: Post.PublishDate, Status: Post.Status}).Error; err != nil {
 			tx.Rollback()
 			return err
 		}

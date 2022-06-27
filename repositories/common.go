@@ -88,7 +88,18 @@ func FilterTitle(value string) func(db *gorm.DB) *gorm.DB {
 }
 func FilterStatus(value string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		return db.Where("LOWER(status) LIKE ?", "%"+strings.ToLower(value)+"%")
+		switch value {
+		case "published":
+			db.Where("publish_date <= now() and status = 'publish'")
+			break
+		case "scheduled":
+			db.Where("publish_date > now() and status = 'publish'")
+			break
+		case "draft":
+			db.Where("status = 'draft'")
+			break
+		}
+		return db
 	}
 }
 func FilterEventName(value string) func(db *gorm.DB) *gorm.DB {
