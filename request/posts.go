@@ -81,7 +81,7 @@ func DeletePosts(g *gin.Context) {
 func UpdatePublishDate(g *gin.Context) {
 	db := config.Cfg.GormDB
 	db = db.WithContext(g)
-	id := g.Param("postid")
+	id := g.Param("id")
 
 	var post model.Post
 	if e := g.ShouldBindJSON(&post); e != nil {
