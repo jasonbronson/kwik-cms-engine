@@ -83,7 +83,7 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			posts.GET("", request.GetPosts)
 			posts.GET("/:postid", request.GetPost)
 			posts.POST("", request.SetPosts)
-			posts.PUT("/publish/:id", request.UpdatePublishDate)
+			posts.PUT("/publish/:postid", request.UpdatePublishDate)
 			posts.PUT("/:postid", request.PutPosts)
 			posts.DELETE("/:postid", request.DeletePosts)
 		}
@@ -92,7 +92,6 @@ func Router(newRelicApp *newrelic.Application) http.Handler {
 			pages.GET("", request.GetPages)
 			pages.GET("/:pageid", request.GetPage)
 			pages.POST("", request.SetPages)
-			posts.PUT("/publish/:id", request.UpdatePublishDate)
 			pages.PUT("/:pageid", request.PutPages)
 			pages.DELETE("/:pageid", request.DeletePages)
 		}
