@@ -37,9 +37,3 @@ func (u *Post) BeforeCreate(tx *gorm.DB) (err error) {
 	}
 	return nil
 }
-
-func (a *Post) BeforeUpdate(tx *gorm.DB) (err error) {
-	tx.Where("post_id = ?", a.ID).Delete(CategoriesPostLinks{})
-	tx.Where("post_id = ?", a.ID).Delete(TagsPostLinks{})
-	return nil
-}

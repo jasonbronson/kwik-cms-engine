@@ -55,9 +55,18 @@ func CreatePost(db *gorm.DB, Post model.Post) error {
 }
 func UpdatePost(db *gorm.DB, Post model.Post) error {
 	tx := db.Begin()
-	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Updates(&Post).Error; err != nil {
-		tx.Rollback()
-		return err
+	if Post.Categories == nil && Post.Tags == nil {
+		if err := db.Model(&Post).Where("id = ?", Post.ID).UpdateColumn("publish_date", Post.PublishDate).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	} else {
+		db.Where("post_id=?", Post.ID).Delete(&model.CategoriesPostLinks{})
+		db.Where("post_id=?", Post.ID).Delete(&model.TagsPostLinks{})
+		if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Updates(&Post).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
 	}
 	tx.Commit()
 	return nil

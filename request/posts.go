@@ -77,22 +77,3 @@ func DeletePosts(g *gin.Context) {
 	}
 	response.Action(g.Writer, http.StatusOK, "success")
 }
-
-func UpdatePublishDate(g *gin.Context) {
-	db := config.Cfg.GormDB
-	db = db.WithContext(g)
-	id := g.Param("id")
-
-	var post model.Post
-	if e := g.ShouldBindJSON(&post); e != nil {
-		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
-		return
-	}
-
-	e := repositories.UpdatePublishDate(db, post.PublishDate, id)
-	if e != nil {
-		response.ErrorResponse(g.Writer, http.StatusInternalServerError, e)
-		return
-	}
-	response.Action(g.Writer, http.StatusOK, "success")
-}
